@@ -60,11 +60,15 @@ public class LucenePipeline implements Pipeline, Closeable {
                 lock.unlock();
             }
         }
-        Document doc = new Document();
-        doc.add(new Field("title", resultItems.getAll().get("title").toString(), TYPE_NOT_INDEX));
-        doc.add(new Field("url", resultItems.getRequest().getUrl(), TYPE_INDEX_TERM));
-        doc.add(new Field("content", resultItems.getAll().get("content").toString(), TYPE_INDEX));
-        index.update(resultItems.getRequest().getUrl(), doc);
+        //非空
+        if (null != resultItems && resultItems.getAll().size()>0)
+        {
+            Document doc = new Document();
+            doc.add(new Field("title", resultItems.getAll().get("title").toString(), TYPE_NOT_INDEX));
+            doc.add(new Field("url", resultItems.getRequest().getUrl(), TYPE_INDEX_TERM));
+            doc.add(new Field("content", resultItems.getAll().get("content").toString(), TYPE_INDEX));
+            index.update(resultItems.getRequest().getUrl(), doc);
+        }
     }
 
     @Override

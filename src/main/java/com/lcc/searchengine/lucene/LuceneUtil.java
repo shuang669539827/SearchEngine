@@ -17,6 +17,7 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.highlight.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.SimpleFSDirectory;
 import org.springframework.util.ResourceUtils;
@@ -106,6 +107,12 @@ public class LuceneUtil {
             IndexSearcher searcher = new IndexSearcher(reader);
             QueryParser parser = new QueryParser("content", ANALYZER);
             Query query = parser.parse(q);
+            //高亮
+//            QueryScorer scorer = new QueryScorer(query);
+//            SimpleHTMLFormatter simpleHtmlFormatter = new SimpleHTMLFormatter("<B>","</B>");//设定高亮显示的格式<B>keyword</B>,此为默认的格式
+//            Highlighter highlighter = new Highlighter(simpleHtmlFormatter, (Scorer) parser);
+//            highlighter.setTextFragmenter(new SimpleFragmenter(20));//设置每次返回的字符数
+
             DuplicateFilter filter = new DuplicateFilter("content");
             filter.setKeepMode(DuplicateFilter.KeepMode.KM_USE_FIRST_OCCURRENCE);
             TopDocs topDocs = searcher.search(query, filter, (pageNum + 1) * pageSize);
